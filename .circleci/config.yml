@@ -1,0 +1,36 @@
+version: 2.1
+jobs:
+  build-arm32:
+    docker:
+      - image: arm32v7/rust:latest
+    resource_class: arm.medium
+    steps:
+      - checkout
+      - run: cargo build --release
+      - run:
+          name: Copy binary to artifacts directory.
+          command: |
+            mkdir -p /tmp/artifacts/arm32v7;
+            cp target/release/dixbrsc /tmp/artifacts/arm32v7/dixbrsc;
+      - store_artifacts:
+          path: /tmp/artifacts
+  build-arm64:
+    docker:
+      - image: cimg/rust:latest
+    resource_class: arm.medium
+    steps:
+      - checkout
+      - run: cargo build --release
+      - run:
+          name: Copy binary to artifacts directory.
+          command: |
+            mkdir -p /tmp/artifacts/arm64;
+            cp target/release/dixbrsc /tmp/artifacts/arm64/dixbrsc;
+      - store_artifacts:
+          path: /tmp/artifacts
+
+workflows:
+  build_and_test:
+    jobs:
+      - build-arm32
+      - build-arm64
