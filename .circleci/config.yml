@@ -16,7 +16,7 @@ jobs:
           path: /tmp/artifacts
   build-arm64:
     docker:
-      - image: cimg/rust:latest
+      - image: cimg/rust:1.85.0
     resource_class: arm.medium
     steps:
       - checkout
